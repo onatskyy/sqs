@@ -302,7 +302,7 @@ class SqsConsumerTest extends TestCase
             ],
             'MessageAttributes' => [
                 'Headers' => [
-                    'StringValue' => json_encode([['hkey' => 'hvalue'], ['key' => 'value']]),
+                    'StringValue' => \base64_encode(json_encode([['hkey' => 'hvalue'], ['key' => 'value']])),
                     'DataType' => 'String',
                 ],
             ],
@@ -376,7 +376,7 @@ class SqsConsumerTest extends TestCase
                 ],
                 'MessageAttributes' => [
                     'Headers' => [
-                        'StringValue' => json_encode([['hkey' => 'hvalue'], ['key' => 'value']]),
+                        'StringValue' => \base64_encode(json_encode([['hkey' => 'hvalue'], ['key' => 'value']])),
                         'DataType' => 'String',
                     ],
                 ],

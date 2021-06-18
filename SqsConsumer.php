@@ -119,11 +119,13 @@ class SqsConsumer implements Consumer
     {
         InvalidMessageException::assertMessageInstanceOf($message, SqsMessage::class);
 
-        $this->context->getSqsClient()->deleteMessage([
-            '@region' => $this->queue->getRegion(),
-            'QueueUrl' => $this->context->getQueueUrl($this->queue),
-            'ReceiptHandle' => $message->getReceiptHandle(),
-        ]);
+        $this->context->getSqsClient()->deleteMessage(
+            [
+                '@region' => $this->queue->getRegion(),
+                'QueueUrl' => $this->context->getQueueUrl($this->queue),
+                'ReceiptHandle' => $message->getReceiptHandle(),
+            ]
+        );
     }
 
     /**
@@ -134,18 +136,22 @@ class SqsConsumer implements Consumer
         InvalidMessageException::assertMessageInstanceOf($message, SqsMessage::class);
 
         if ($requeue) {
-            $this->context->getSqsClient()->changeMessageVisibility([
-                '@region' => $this->queue->getRegion(),
-                'QueueUrl' => $this->context->getQueueUrl($this->queue),
-                'ReceiptHandle' => $message->getReceiptHandle(),
-                'VisibilityTimeout' => $message->getRequeueVisibilityTimeout(),
-            ]);
+            $this->context->getSqsClient()->changeMessageVisibility(
+                [
+                    '@region' => $this->queue->getRegion(),
+                    'QueueUrl' => $this->context->getQueueUrl($this->queue),
+                    'ReceiptHandle' => $message->getReceiptHandle(),
+                    'VisibilityTimeout' => $message->getRequeueVisibilityTimeout(),
+                ]
+            );
         } else {
-            $this->context->getSqsClient()->deleteMessage([
-                '@region' => $this->queue->getRegion(),
-                'QueueUrl' => $this->context->getQueueUrl($this->queue),
-                'ReceiptHandle' => $message->getReceiptHandle(),
-            ]);
+            $this->context->getSqsClient()->deleteMessage(
+                [
+                    '@region' => $this->queue->getRegion(),
+                    'QueueUrl' => $this->context->getQueueUrl($this->queue),
+                    'ReceiptHandle' => $message->getReceiptHandle(),
+                ]
+            );
         }
     }
 
@@ -197,7 +203,12 @@ class SqsConsumer implements Consumer
         }
 
         if (isset($sqsMessage['MessageAttributes']['Headers'])) {
-            $headers = json_decode($sqsMessage['MessageAttributes']['Headers']['StringValue'], true);
+            $headers = json_decode(
+                \base64_decode($sqsMessage['MessageAttributes']['Headers']['StringValue'], true),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
 
             $message->setHeaders($headers[0]);
             $message->setProperties($headers[1]);
