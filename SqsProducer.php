@@ -48,7 +48,7 @@ class SqsProducer implements Producer
             'MessageAttributes' => [
                 'Headers' => [
                     'DataType' => 'String',
-                    'StringValue' => json_encode([$message->getHeaders(), $message->getProperties()]),
+                    'StringValue' => \base64_encode(json_encode([$message->getHeaders(), $message->getProperties()])),
                 ],
             ],
             'MessageBody' => $body,

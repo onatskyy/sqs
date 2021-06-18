@@ -89,7 +89,7 @@ class SqsProducerTest extends TestCase
             'MessageAttributes' => [
                 'Headers' => [
                     'DataType' => 'String',
-                    'StringValue' => '[{"hkey":"hvaleu"},{"key":"value"}]',
+                    'StringValue' => \base64_encode('[{"hkey":"hvaleu"},{"key":"value"}]'),
                 ],
             ],
             'MessageBody' => 'theBody',
@@ -136,7 +136,7 @@ class SqsProducerTest extends TestCase
             'MessageAttributes' => [
                 'Headers' => [
                     'DataType' => 'String',
-                    'StringValue' => '[[],[]]',
+                    'StringValue' => \base64_encode('[[],[]]'),
                 ],
             ],
             'MessageBody' => 'theBody',
@@ -179,7 +179,7 @@ class SqsProducerTest extends TestCase
             'MessageAttributes' => [
                 'Headers' => [
                     'DataType' => 'String',
-                    'StringValue' => '[{"hkey":"hvaleu"},{"key":"value"}]',
+                    'StringValue' => \base64_encode('[{"hkey":"hvaleu"},{"key":"value"}]'),
                 ],
             ],
             'MessageBody' => 'theBody',
